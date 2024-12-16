@@ -1,8 +1,8 @@
 package com.library.service;
+
 import com.library.dao.BookDAO; // Importation de BookDAO
 import com.library.model.Book;   // Importation de Book
 import java.util.List;
-
 
 public class BookService {
     private BookDAO bookDAO;  // Utilisation de DAO pour la gestion des livres

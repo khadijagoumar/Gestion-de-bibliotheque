@@ -2,28 +2,23 @@ package com.library.service;
 
 import com.library.dao.StudentDAO;
 import com.library.model.Student;
+
 import java.sql.SQLException;
 import java.util.List;
 
 public class StudentService {
     private StudentDAO studentDAO;
 
-    public StudentService() {
-    this.studentDAO = new StudentDAO();
-}
-
-    // Constructeur
     public StudentService(StudentDAO studentDAO) {
         this.studentDAO = studentDAO;
     }
-
-    
 
     // Ajouter un étudiant
     public void addStudent(Student student) {
         try {
             studentDAO.addStudent(student);
         } catch (SQLException e) {
+            // Log l'erreur et affiche un message
             System.err.println("Erreur lors de l'ajout de l'étudiant : " + e.getMessage());
         }
     }
@@ -36,6 +31,7 @@ public class StudentService {
                 System.out.println("ID: " + student.getId() + " | Nom: " + student.getName());
             }
         } catch (SQLException e) {
+            // Log l'erreur et affiche un message
             System.err.println("Erreur lors de l'affichage des étudiants : " + e.getMessage());
         }
     }
@@ -45,6 +41,7 @@ public class StudentService {
         try {
             return studentDAO.getStudentById(id);
         } catch (SQLException e) {
+            // Log l'erreur et affiche un message
             System.err.println("Erreur lors de la recherche de l'étudiant par ID : " + e.getMessage());
         }
         return null;

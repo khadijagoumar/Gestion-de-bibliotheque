@@ -18,6 +18,14 @@ public class Borrow {
         this.returnDate = returnDate;
     }
 
+    // Constructeur sans id (pour la création d'un nouvel emprunt)
+    public Borrow(Student student, Book book, Date borrowDate, Date returnDate) {
+        this.student = student;
+        this.book = book;
+        this.borrowDate = borrowDate;
+        this.returnDate = returnDate;
+    }
+
     // Getters et Setters
     public int getId() {
         return id;

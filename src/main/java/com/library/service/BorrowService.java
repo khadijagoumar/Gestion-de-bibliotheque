@@ -1,30 +1,33 @@
-
 package com.library.service;
 
-import com.library.dao.BookDAO;
-import com.library.dao.StudentDAO;
-import com.library.model.Student;
 import com.library.dao.BorrowDAO;
 import com.library.model.Borrow;
+import com.library.model.Student;
+import com.library.model.Book;
 
 public class BorrowService {
 
     private BorrowDAO borrowDAO;
+    private StudentService studentService;
+    private BookService bookService;
 
-    // Constructeur avec BorrowDAO
-    public BorrowService(BorrowDAO borrowDAO) {
+    public BorrowService(BorrowDAO borrowDAO, StudentService studentService, BookService bookService) {
         this.borrowDAO = borrowDAO;
+        this.studentService = studentService;
+        this.bookService = bookService;
     }
 
     // Méthode pour emprunter un livre
-    public void borrowBook(Borrow borrow) {
-        // Sauvegarde de l'emprunt dans la base de données
-        borrowDAO.save(borrow);
-    }
+    public void borrowBook(int studentId, int bookId, java.util.Date borrowDate, java.util.Date returnDate) {
+        Student student = studentService.findStudentById(studentId);
+        Book book = bookService.findBookById(bookId);
 
-    // Afficher les emprunts (méthode fictive, à adapter)
-    public void displayBorrows() {
-        System.out.println("Liste des emprunts...");
-        // Afficher les emprunts enregistrés (adapté selon votre DAO)
+        if (student != null && book != null) {
+            Borrow borrow = new Borrow(student, book, borrowDate, returnDate);
+            borrowDAO.addBorrow(borrow);
+            System.out.println("Emprunt enregistré pour l'étudiant : " + student.getName());
+        } else {
+            System.out.println("Impossible d'enregistrer l'emprunt, étudiant ou livre introuvable.");
+        }
     }
 }

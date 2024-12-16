@@ -6,20 +6,21 @@ public class Book {
     private String author;
     private String publisher;
     private int year;
+    private String isbn;  // Ajout de l'ISBN
 
     // Constructeur par défaut
-    public Book() {
-    }
+    public Book() {}
 
     // Constructeur complet
-    public Book(String title, String author, String publisher, int year) {
+    public Book(String title, String author, String publisher, int year, String isbn) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.year = year;
+        this.isbn = isbn;
     }
 
-    // Constructeur additionnel si nécessaire
+    // Constructeur additionnel
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
@@ -64,5 +65,17 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String getIsbn() {  // Getter pour ISBN
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {  // Setter pour ISBN
+        this.isbn = isbn;
+    }
+
+    public boolean isPresent() {
+        return true;
     }
 }
