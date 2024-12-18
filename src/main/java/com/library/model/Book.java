@@ -26,6 +26,14 @@ public class Book {
         this.author = author;
     }
 
+    public Book(int id, String title, String author, String isbn, String publisher, int year) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.year = year;
+    }
     // Getters et Setters
     public int getId() {
         return id;

@@ -9,117 +9,67 @@ import java.util.List;
 
 public class BookDAO {
 
-    // Ajouter un nouveau livre dans la base de données
-    public void add(Book book) {
-        String sql = "INSERT INTO books (title, author, isbn, publisher, published_year) VALUES (?, ?, ?, ?, ?)";
+    // Ajouter un livre
+    public void addBook(Book book) {
+        String query = "INSERT INTO books (id, title, author, isbn, publisher, year) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DbConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, book.getTitle());
-            statement.setString(2, book.getAuthor());
-            statement.setString(3, book.getIsbn());
-            statement.setString(4, book.getPublisher());
-            statement.setInt(5, book.getYear());
-
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Livre inséré avec succès !");
-            }
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, book.getId());
+            statement.setString(2, book.getTitle());
+            statement.setString(3, book.getAuthor());
+            statement.setString(4, book.getIsbn());
+            statement.setString(5, book.getPublisher());
+            statement.setInt(6, book.getYear());
+            statement.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Erreur lors de l'ajout du livre : " + e.getMessage());
+            System.err.println("Error adding book: " + e.getMessage());
         }
-    }
-
-    // Récupérer un livre par son ID
-    public Book getBookById(int id) {
-        String sql = "SELECT * FROM books WHERE id = ?";
-        Book book = null;
-
-        try (Connection connection = DbConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                book = new Book();
-                book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPublisher(resultSet.getString("publisher"));
-                book.setYear(resultSet.getInt("published_year"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération du livre : " + e.getMessage());
-        }
-
-        return book;
     }
 
     // Récupérer tous les livres
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT * FROM books";
-
+        String query = "SELECT * FROM books";
         try (Connection connection = DbConnection.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-
+             ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getInt("id"));
-                book.setTitle(resultSet.getString("title"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setIsbn(resultSet.getString("isbn"));
-                book.setPublisher(resultSet.getString("publisher"));
-                book.setYear(resultSet.getInt("published_year"));
+                Book book = new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("author"),
+                        resultSet.getString("isbn"),
+                        resultSet.getString("publisher"),
+                        resultSet.getInt("year")
+                );
                 books.add(book);
             }
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération des livres : " + e.getMessage());
+            System.err.println("Error fetching books: " + e.getMessage());
         }
-
         return books;
     }
 
-    // Supprimer un livre par son ID
-    public void delete(int id) {
-        String sql = "DELETE FROM books WHERE id = ?";
-
+    // Récupérer un livre par ID
+    public Book getBookById(int id) {
+        String query = "SELECT * FROM books WHERE id = ?";
         try (Connection connection = DbConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
-            int rowsDeleted = statement.executeUpdate();
-            if (rowsDeleted > 0) {
-                System.out.println("Livre supprimé avec succès !");
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("author"),
+                        resultSet.getString("isbn"),
+                        resultSet.getString("publisher"),
+                        resultSet.getInt("year")
+                );
             }
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la suppression du livre : " + e.getMessage());
+            System.err.println("Error fetching book: " + e.getMessage());
         }
-    }
-
-    // Mettre à jour les informations d'un livre
-    public void update(Book book) {
-        String sql = "UPDATE books SET title = ?, author = ?, isbn = ?, publisher = ?, published_year = ? WHERE id = ?";
-
-        try (Connection connection = DbConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setString(1, book.getTitle());
-            statement.setString(2, book.getAuthor());
-            statement.setString(3, book.getIsbn());
-            statement.setString(4, book.getPublisher());
-            statement.setInt(5, book.getYear());
-            statement.setInt(6, book.getId());
-
-            int rowsUpdated = statement.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("Livre mis à jour avec succès !");
-            }
-        } catch (SQLException e) {
-            System.err.println("Erreur lors de la mise à jour du livre : " + e.getMessage());
-        }
+        return null;
     }
 }

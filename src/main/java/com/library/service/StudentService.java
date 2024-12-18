@@ -7,43 +7,37 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class StudentService {
-    private StudentDAO studentDAO;
+    private final StudentDAO studentDAO;
 
     public StudentService(StudentDAO studentDAO) {
         this.studentDAO = studentDAO;
     }
 
-    // Ajouter un étudiant
     public void addStudent(Student student) {
         try {
             studentDAO.addStudent(student);
         } catch (SQLException e) {
-            // Log l'erreur et affiche un message
-            System.err.println("Erreur lors de l'ajout de l'étudiant : " + e.getMessage());
+            System.err.println("Error adding student: " + e.getMessage());
         }
     }
 
-    // Afficher tous les étudiants
     public void displayStudents() {
         try {
             List<Student> students = studentDAO.getAllStudents();
             for (Student student : students) {
-                System.out.println("ID: " + student.getId() + " | Nom: " + student.getName());
+                System.out.println(student.getId() + " - " + student.getName());
             }
         } catch (SQLException e) {
-            // Log l'erreur et affiche un message
-            System.err.println("Erreur lors de l'affichage des étudiants : " + e.getMessage());
+            System.err.println("Error fetching students: " + e.getMessage());
         }
     }
 
-    // Trouver un étudiant par ID
-    public Student findStudentById(int id) {
-        try {
-            return studentDAO.getStudentById(id);
-        } catch (SQLException e) {
-            // Log l'erreur et affiche un message
-            System.err.println("Erreur lors de la recherche de l'étudiant par ID : " + e.getMessage());
+    // Récupérer un étudiant par ID
+    public Student getStudentById(int id) {
+        Student student = studentDAO.getStudentById(id);
+        if (student == null) {
+            System.err.println("Student with ID " + id + " not found");
         }
-        return null;
+        return student;
     }
 }

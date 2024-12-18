@@ -26,6 +26,13 @@ public class Borrow {
         this.returnDate = returnDate;
     }
 
+    public Borrow(int studentId, int bookId, Date borrowDate, Date returnDate) {
+    }
+
+    public Borrow() {
+
+    }
+
     // Getters et Setters
     public int getId() {
         return id;
