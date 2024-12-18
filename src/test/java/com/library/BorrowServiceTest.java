@@ -33,7 +33,7 @@ class BorrowServiceTest {
     }
 
     @Test
-    public void testBorrowBook() {
+    void testBorrowBook() {
         Student student = new Student(5, "David");
         Book book = new Book(7, "1984", "George Orwell", "123456789", "Secker & Warburg", 1949);
         studentService.addStudent(student);
