@@ -34,19 +34,19 @@ class BorrowServiceTest {
 
     @Test
     public void testBorrowBook() {
-        Student student = new Student(5, "Alice");
-        Book book = new Book(6, "1984", "George Orwell", "123456789", "Secker & Warburg", 1949);
+        Student student = new Student(5, "David");
+        Book book = new Book(7, "1984", "George Orwell", "123456789", "Secker & Warburg", 1949);
         studentService.addStudent(student);
         bookService.addBook(book);
 
         Date borrowDate = new Date();
         Date returnDate = new Date(System.currentTimeMillis() + 7L * 24 * 60 * 60 * 1000); // Retour dans 7 jours
-        borrowService.borrowBook(1, 1, borrowDate, returnDate);
+        borrowService.borrowBook(5, 7, borrowDate, returnDate);
 
-        /* Vérification de l'emprunt
-        Borrow borrow = borrowDAO.getBorrowByStudentId(1);
+        // Vérification de l'emprunt
+        Borrow borrow = borrowDAO.getBorrowByStudentId(5);
         assertNotNull(borrow);
         assertEquals(student.getId(), borrow.getStudent().getId());
-        assertEquals(book.getId(), borrow.getBook().getId());*/
+        assertEquals(book.getId(), borrow.getBook().getId());
     }
 }
