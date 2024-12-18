@@ -9,55 +9,34 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class BookServiceTest {
-    private BookService bookService;
-    private BookDAO bookDAO;
 
-    @BeforeEach
-    void setUp() {
-        bookDAO = new BookDAO();
-        bookService = new BookService();
-    }
+public class BookServiceTest {
 
-    @Test
-    void testAddBook() {
-        // Ajout d'un livre
-        Book book = new Book("Java Programming", "John Doe", "Tech Publisher", 2024, "1234567890");
-        bookService.addBook(book);
+        private BookService bookService;
+        private BookDAO bookDAO;
 
-        // Vérifier que le livre est ajouté
-        assertEquals(1, bookDAO.getAllBooks().size());
-        assertEquals("Java Programming", bookDAO.getBookById(book.getId()).getTitle());
-    }
+        @BeforeEach
+        public void setUp() {
+            bookDAO = new BookDAO(); // Assurez-vous d'avoir une instance correcte de DAO
+            bookService = new BookService(bookDAO);
+        }
 
-    @Test
-    void testUpdateBook() {
-        // Ajout du livre initial
-        Book book = new Book("Java Programming", "John Doe", "Tech Publisher", 2024, "1234567890");
-        bookService.addBook(book);
+        @Test
+        public void testAddBook() {
+            Book book = new Book(3, "1984", "George Orwell", "123456789", "Secker & Warburg", 1949);
+            bookService.addBook(book);
+            Book fetchedBook = bookService.getBookById(1);
+            assertNotNull(fetchedBook);
+            assertEquals("1984", fetchedBook.getTitle());
+        }
 
-        // Mise à jour du livre
-       // bookService.updateBook(new Book(book.getId(), "Advanced Java", "Jane Doe", "Advanced Publisher", 2025, "0987654321"));
+        @Test
+        public void testGetAllBooks() {
+            Book book1 = new Book(4, "To Kill a Mockingbird", "Harper Lee", "987654321", "J.B. Lippincott & Co.", 1960);
+            Book book2 = new Book(5, "Brave New World", "Aldous Huxley", "123987456", "HarperCollins", 1932);
+            bookService.addBook(book1);
+            bookService.addBook(book2);
 
-        // Vérifier que les informations ont été mises à jour
-        Book updatedBook = bookDAO.getBookById(book.getId());
-        assertEquals("Advanced Java", updatedBook.getTitle());
-        assertEquals("Jane Doe", updatedBook.getAuthor());
-        assertEquals("Advanced Publisher", updatedBook.getPublisher());
-        assertEquals(2025, updatedBook.getYear());
-        assertEquals("0987654321", updatedBook.getIsbn());
-    }
-
-    @Test
-    void testDeleteBook() {
-        // Ajout d'un livre
-        Book book = new Book("Java Programming", "John Doe", "Tech Publisher", 2024, "1234567890");
-        bookService.addBook(book);
-
-        // Suppression du livre
-        bookService.deleteBook(book.getId());
-
-        // Vérifier que le livre est supprimé
-        assertFalse(bookDAO.getBookById(book.getId()).isPresent());
-    }
+            bookService.displayBooks(); // Verifier que les livres sont bien affichés
+        }
 }

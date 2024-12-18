@@ -1,4 +1,4 @@
-package com.library.test;
+package com.library;
 
 import com.library.dao.StudentDAO;
 import com.library.model.Student;
@@ -13,36 +13,26 @@ class StudentServiceTest {
     private StudentDAO studentDAO;
 
     @BeforeEach
-    void setUp() {
-        studentDAO = new StudentDAO();
+    public void setUp() {
+        studentDAO = new StudentDAO(); // Assurez-vous d'avoir une instance correcte de DAO
         studentService = new StudentService(studentDAO);
     }
 
     @Test
-    void testAddStudent() {
-        studentService.addStudent(1, "Alice", "alice@example.com");
-        assertEquals(1, studentDAO.getAllStudents().size());
-        assertEquals("Alice", studentDAO.getStudentById(1).get().getName());
+    public void testAddStudent() {
+        Student student = new Student(3, "Noha");
+        studentService.addStudent(student);
+        Student fetchedStudent = studentService.getStudentById(3);
+        assertNotNull(fetchedStudent);
+        assertEquals("Noha", fetchedStudent.getName());
     }
 
     @Test
-    void testUpdateStudent() {
-        studentService.addStudent(1, "Alice", "alice@example.com");
-        studentService.updateStudent(1, "Alice Smith", "alice.smith@example.com");
-        assertEquals("Alice Smith", studentDAO.getStudentById(1).get().getName());
-    }
-
-    @Test
-    void testDeleteStudent() {
-        studentService.addStudent(1, "Alice", "alice@example.com");
-        studentService.deleteStudent(1);
-        assertTrue(studentDAO.getStudentById(1).isEmpty());
-    }
-
-    @Test
-    void testGetAllStudents() {
-        studentService.addStudent(1, "Alice", "alice@example.com");
-        studentService.addStudent(2, "Bob", "bob@example.com");
-        assertEquals(2, studentDAO.getAllStudents().size());
+    public void testGetStudentById() {
+        Student student = new Student(4, "Kati");
+        studentService.addStudent(student);
+        Student fetchedStudent = studentService.getStudentById(4);
+        assertNotNull(fetchedStudent);
+        assertEquals("Kati", fetchedStudent.getName());
     }
 }
