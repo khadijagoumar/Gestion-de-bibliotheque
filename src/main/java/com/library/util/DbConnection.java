@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/library_db"; // Vérifiez le nom de la base de données
-    private static final String USER = "root"; // Utilisateur MySQL
-    private static final String PASSWORD = ""; // Mot de passe vide
+    private static final String URL = "jdbc:mysql://avnadmin:AVNS_PPMcIA3iHVb8U8fpyp6@mysql-2941b198-khadijagoumarzouazte-43d2.a.aivencloud.com:17966/gestionbib?ssl-mode=REQUIRED"; // Vérifiez le nom de la base de données
+    private static final String USER = "avnadmin"; // Utilisateur MySQL
+    private static final String PASSWORD = "AVNS_PPMcIA3iHVb8U8fpyp6"; // Mot de passe vide
 
     public static Connection getConnection() throws SQLException {
         try {
